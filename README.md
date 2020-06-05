@@ -34,6 +34,12 @@ oc apply -f argocd/argocd.yml -n argocd
 oc apply -f argocd/route.yml -n argocd
 ```
 
+### Give ArgoCD RBAC permissions
+
+```bash
+oc adm policy add-cluster-role-to-user cluster-admin -z argocd-application-controller -n argocd
+```
+
 ### Login to ArgoCD
 
 Get password for `admin` user:
