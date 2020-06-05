@@ -1,0 +1,51 @@
+apiVersion: tekton.dev/v1alpha1
+kind: PipelineResource
+metadata:
+  name: camel-quarkus-quickstart-git
+spec:
+  type: git
+  params:
+  - name: url
+    value: https://github.com/rh-ei-stp/camel-quarkus-quickstart
+---
+apiVersion: tekton.dev/v1alpha1
+kind: PipelineResource
+metadata:
+  name: camel-quarkus-quickstart-image
+spec:
+  type: image
+  params:
+  - name: url
+    value: quay.io/davgordo/camel-quarkus-quickstart
+---
+apiVersion: tekton.dev/v1alpha1
+kind: Pipeline
+metadata:
+  name: camel-quarkus-quickstart-build-pipeline
+spec:
+  resources:
+  - name: app-git
+    type: git
+  - name: app-image
+    type: image
+  params:
+  - name: imageTag
+    type: string
+    default: latest
+    description: Tag for the built image
+  tasks: 
+  - name: build-and-push
+    taskRef:
+      name: build-from-dockerfile
+    params:
+      - name: DOCKERFILE_PATH
+        value: "./Dockerfile"
+      - name: IMAGE_TAG
+        value: "$(params.imageTag)"
+    resources:
+      inputs:
+      - name: source
+        resource: app-git
+      outputs:
+      - name: image
+        resource: app-image
