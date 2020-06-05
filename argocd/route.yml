@@ -1,0 +1,16 @@
+kind: Route
+metadata:
+  labels:
+    app.kubernetes.io/component: server
+    app.kubernetes.io/name: cni-demo-argocd-server
+    app.kubernetes.io/part-of: argocd
+  name: argocd
+spec:
+  port:
+    targetPort: https
+  tls:
+    insecureEdgeTerminationPolicy: Redirect
+    termination: passthrough
+  to:
+    kind: Service
+    name: cni-demo-argocd-server
