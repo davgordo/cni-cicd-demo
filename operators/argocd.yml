@@ -1,3 +1,12 @@
+---
+apiVersion: operators.coreos.com/v1
+kind: OperatorGroup
+metadata:
+  name: argocd
+spec:
+  targetNamespaces:
+  - argocd
+---
 apiVersion: operators.coreos.com/v1alpha1
 kind: Subscription
 metadata:

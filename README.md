@@ -36,3 +36,24 @@ oc apply -f argocd/route.yml -n argocd
 
 ### Login to ArgoCD
 
+Get password for `admin` user:
+
+```bash
+oc get secret cni-demo-argocd-cluster -o jsonpath='{.data.admin\.password}' -n argocd | base64 -d
+```
+
+Get the URL to ArgoCD:
+
+```bash
+echo https://$(oc get routes argocd -o jsonpath='{ .spec.host }' -n argocd)
+```
+
+Use the URL and credentials determined in the previous commands to login to the
+ArgoCD UI. 
+
+From the UI, the documentation tab will provide a link to the `argocd`
+CLI download. Download the CLI, and add it to your path, then login using:
+
+```bash
+argocd login $(oc get routes argocd -o jsonpath='{ .spec.host }' -n argocd):443
+```
