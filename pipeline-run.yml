@@ -1,7 +1,7 @@
-apiVersion: tekton.dev/v1alpha1
+apiVersion: tekton.dev/v1beta1
 kind: PipelineRun
 metadata:
-  generateName: camel-quarkus-quickstart-build-pipeline-run-
+  name: camel-quarkus-quickstart-build-pipeline-run
 spec:
   pipelineRef:
     name: camel-quarkus-quickstart-build-pipeline
