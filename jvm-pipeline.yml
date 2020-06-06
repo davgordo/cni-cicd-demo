@@ -26,7 +26,7 @@ spec:
   - name: app-container-image
     type: image
   tasks:
-  - name: build-greeter-jvm
+  - name: build-app-jvm
     taskRef:
       kind: Task
       name: jvm-build-task

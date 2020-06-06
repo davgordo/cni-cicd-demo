@@ -4,26 +4,26 @@ metadata:
   name: jvm-build-task
 spec:
   params:
-  - default: /workspace/git-source
+  - name: contextDir
+    type: string
+    default: /workspace/git-source
     description: The Docker build context Dir
-    name: contextDir
+  - name: mavenMirrorUrl
     type: string
-  - default: https://repo1.maven.org/maven2
+    default: https://repo1.maven.org/maven2
     description: The MAVEN_MIRROR_URL url to use
-    name: mavenMirrorUrl
+  - name: mavenCmdArgs
     type: string
-  - default: clean -DskipTests install -Pnative
+    default: clean -DskipTests install -Pnative
     description: The maven command parameter
-    name: mavenCmdArgs
+  - name: runScript
     type: string
-  - default: /usr/local/bin/buildah.sh
+    default: /usr/local/bin/buildah.sh
     description: The script to use during
-    name: runScript
+  - name: push
     type: string
-  - default: "true"
+    default: "true"
     description: Whether to push the image to container registry or not
-    name: push
-    type: string
   resources:
     inputs:
     - name: git-source
@@ -36,16 +36,16 @@ spec:
     image: quay.io/rhdevelopers/quarkus-java-builder
     imagePullPolicy: IfNotPresent
     args:
-    - ${inputs.params.runScript}
+    - ${params.runScript}
     env:
     - name: MAVEN_MIRROR_URL
-      value: ${inputs.params.mavenMirrorUrl}
+      value: ${params.mavenMirrorUrl}
     - name: WORK_DIR
-      value: ${inputs.params.contextDir}
+      value: ${params.contextDir}
     - name: PUSH
-      value: ${inputs.params.push}
+      value: ${params.push}
     - name: MVN_CMD_ARGS
-      value: ${inputs.params.mavenCmdArgs}
+      value: ${params.mavenCmdArgs}
     - name: DESTINATION_NAME
       value: ${outputs.resources.builtImage.url}
     resources: {}
