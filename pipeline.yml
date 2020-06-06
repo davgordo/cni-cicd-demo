@@ -16,32 +16,34 @@ spec:
   type: image
   params:
   - name: url
-    value: quay.io/davgordo/camel-quarkus-quickstart
+    value: image-registry.openshift-image-registry.svc:5000/camel-quarkus-quickstart-ci/camel-quarkus-quickstart
 ---
-apiVersion: tekton.dev/v1alpha1
+apiVersion: tekton.dev/v1beta1
 kind: Pipeline
 metadata:
   name: camel-quarkus-quickstart-build-pipeline
 spec:
+  params:
+  - default: latest
+    description: Tag for the built image
+    name: imageTag
+    type: string
+
+
   resources:
   - name: app-git
     type: git
   - name: app-image
     type: image
-  params:
-  - name: imageTag
-    type: string
-    default: latest
-    description: Tag for the built image
-  tasks: 
+
+
+  tasks:
   - name: build-and-push
-    taskRef:
-      name: build-from-dockerfile
     params:
-      - name: DOCKERFILE_PATH
-        value: "./Dockerfile"
-      - name: IMAGE_TAG
-        value: "$(params.imageTag)"
+    - name: DOCKERFILE_PATH
+      value: ./Dockerfile
+    - name: IMAGE_TAG
+      value: $(params.imageTag)
     resources:
       inputs:
       - name: source
@@ -49,3 +51,6 @@ spec:
       outputs:
       - name: image
         resource: app-image
+    taskRef:
+      kind: Task
+      name: build-from-dockerfile
