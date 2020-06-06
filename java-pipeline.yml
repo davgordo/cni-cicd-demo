@@ -31,8 +31,6 @@ spec:
       value: $(params.mavenCmdArgs)
     - name: runScript
       value: $(params.runScript)
-    - name: push
-      value: $(params.push)
     resources:
       inputs:
       - name: git-source
