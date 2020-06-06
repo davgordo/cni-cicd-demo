@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
-  name: jvm-build-task
+  name: maven-build
 spec:
   params:
   - name: contextDir
@@ -20,10 +20,6 @@ spec:
     type: string
     default: /usr/local/bin/maven-run.sh
     description: The script to use during
-  - name: push
-    type: string
-    default: "true"
-    description: Whether to push the image to container registry or not
   resources:
     inputs:
     - name: git-source
@@ -32,7 +28,7 @@ spec:
     - name: builtImage
       type: image
   steps:
-  - name: buildah-build-push
+  - name: maven-build
     image: quay.io/rhdevelopers/quarkus-java-builder
     imagePullPolicy: IfNotPresent
     args:
@@ -49,11 +45,6 @@ spec:
     - name: DESTINATION_NAME
       value: $(resources.outputs.builtImage.url)
     resources: {}
-    securityContext:
-      capabilities:
-        add:
-        - SYS_ADMIN
-      privileged: true
     volumeMounts:
     - mountPath: /root/.m2
       name: m2-cache
