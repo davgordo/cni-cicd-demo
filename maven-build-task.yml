@@ -20,9 +20,6 @@ spec:
     inputs:
     - name: git-source
       type: git
-    outputs:
-    - name: builtImage
-      type: image
   steps:
   - name: maven-build
     image: quay.io/rhdevelopers/quarkus-java-builder
