@@ -4,10 +4,6 @@ metadata:
   name: maven-build
 spec:
   params:
-  - name: contextDir
-    type: string
-    default: /workspace/git-source
-    description: The Docker build context Dir
   - name: mavenMirrorUrl
     type: string
     default: https://repo1.maven.org/maven2
@@ -36,14 +32,8 @@ spec:
     env:
     - name: MAVEN_MIRROR_URL
       value: $(params.mavenMirrorUrl)
-    - name: WORK_DIR
-      value: $(params.contextDir)
-    - name: PUSH
-      value: $(params.push)
     - name: MVN_CMD_ARGS
       value: $(params.mavenCmdArgs)
-    - name: DESTINATION_NAME
-      value: $(resources.outputs.builtImage.url)
     resources: {}
     volumeMounts:
     - mountPath: /root/.m2
