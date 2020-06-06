@@ -1,23 +1,3 @@
-apiVersion: tekton.dev/v1alpha1
-kind: PipelineResource
-metadata:
-  name: camel-quarkus-quickstart-git
-spec:
-  type: git
-  params:
-  - name: url
-    value: https://github.com/rh-ei-stp/camel-quarkus-quickstart
----
-apiVersion: tekton.dev/v1alpha1
-kind: PipelineResource
-metadata:
-  name: camel-quarkus-quickstart-image
-spec:
-  type: image
-  params:
-  - name: url
-    value: image-registry.openshift-image-registry.svc:5000/camel-quarkus-quickstart-ci/camel-quarkus-quickstart
----
 apiVersion: tekton.dev/v1beta1
 kind: Pipeline
 metadata:
@@ -28,15 +8,11 @@ spec:
     description: Tag for the built image
     name: imageTag
     type: string
-
-
   resources:
   - name: app-git
     type: git
   - name: app-image
     type: image
-
-
   tasks:
   - name: build-and-push
     params:

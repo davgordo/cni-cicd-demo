@@ -1,0 +1,17 @@
+apiVersion: tekton.dev/v1alpha1
+kind: PipelineRun
+metadata:
+  generateName: camel-quarkus-quickstart-build-pipeline-run-
+spec:
+  pipelineRef:
+    name: camel-quarkus-quickstart-build-pipeline
+  params:
+    - name: imageTag
+      value: "latest"
+  resources:
+    - name: app-git
+      resourceRef:
+        name: camel-quarkus-quickstart-git
+    - name: app-image
+      resourceRef:
+        name: camel-quarkus-quickstart-image
