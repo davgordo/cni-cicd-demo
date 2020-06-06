@@ -14,7 +14,7 @@ spec:
     description: The maven goals to pass to the build
   - name: runScript
     type: string
-    default: /usr/local/bin/maven-buildah.sh
+    default: /usr/local/bin/maven-run.sh
     description: The buildah script to run
   - name: push
     type: string
