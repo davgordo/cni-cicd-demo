@@ -36,18 +36,18 @@ spec:
     image: quay.io/rhdevelopers/quarkus-java-builder
     imagePullPolicy: IfNotPresent
     args:
-    - ${params.runScript}
+    - $(params.runScript)
     env:
     - name: MAVEN_MIRROR_URL
-      value: ${params.mavenMirrorUrl}
+      value: $(params.mavenMirrorUrl)
     - name: WORK_DIR
-      value: ${params.contextDir}
+      value: $(params.contextDir)
     - name: PUSH
-      value: ${params.push}
+      value: $(params.push)
     - name: MVN_CMD_ARGS
-      value: ${params.mavenCmdArgs}
+      value: $(params.mavenCmdArgs)
     - name: DESTINATION_NAME
-      value: ${outputs.resources.builtImage.url}
+      value: $(resources.outputs.builtImage.url)
     resources: {}
     securityContext:
       capabilities:
