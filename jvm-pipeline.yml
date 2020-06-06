@@ -1,0 +1,48 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: jvm-pipeline
+spec:
+  params:
+  - name: mavenMirrorUrl
+    type: string
+    default: https://repo1.mavenorg.maven2
+    description: The Maven Mirror URL to use for
+  - name: mavenCmdArgs
+    type: string
+    default: clean -DskipTests package
+    description: The maven goals to pass to the build
+  - name: runScript
+    type: string
+    default: /usr/local/bin/maven-buildah.sh
+    description: The buildah script to run
+  - name: push
+    type: string
+    default: "true"
+    description: Whether to push the image to container registry
+  resources:
+  - name: source-repo
+    type: git
+  - name: app-container-image
+    type: image
+  tasks:
+  - name: build-greeter-jvm
+    taskRef:
+      kind: Task
+      name: jvm-build-task
+    params:
+    - name: mavenMirrorUrl
+      value: ${params.mavenMirrorUrl}
+    - name: mavenCmdArgs
+      value: ${params.mavenCmdArgs}
+    - name: runScript
+      value: ${params.runScript}
+    - name: push
+      value: ${params.push}
+    resources:
+      inputs:
+      - name: git-source
+        resource: source-repo
+      outputs:
+      - name: builtImage
+        resource: app-container-image

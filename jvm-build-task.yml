@@ -1,0 +1,63 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: jvm-build-task
+spec:
+  params:
+  - default: /workspace/git-source
+    description: The Docker build context Dir
+    name: contextDir
+    type: string
+  - default: https://repo1.maven.org/maven2
+    description: The MAVEN_MIRROR_URL url to use
+    name: mavenMirrorUrl
+    type: string
+  - default: clean -DskipTests install -Pnative
+    description: The maven command parameter
+    name: mavenCmdArgs
+    type: string
+  - default: /usr/local/bin/buildah.sh
+    description: The script to use during
+    name: runScript
+    type: string
+  - default: "true"
+    description: Whether to push the image to container registry or not
+    name: push
+    type: string
+  resources:
+    inputs:
+    - name: git-source
+      type: git
+    outputs:
+    - name: builtImage
+      type: image
+  steps:
+  - name: buildah-build-push
+    image: quay.io/rhdevelopers/quarkus-java-builder
+    imagePullPolicy: IfNotPresent
+    args:
+    - ${inputs.params.runScript}
+    env:
+    - name: MAVEN_MIRROR_URL
+      value: ${inputs.params.mavenMirrorUrl}
+    - name: WORK_DIR
+      value: ${inputs.params.contextDir}
+    - name: PUSH
+      value: ${inputs.params.push}
+    - name: MVN_CMD_ARGS
+      value: ${inputs.params.mavenCmdArgs}
+    - name: DESTINATION_NAME
+      value: ${outputs.resources.builtImage.url}
+    resources: {}
+    securityContext:
+      capabilities:
+        add:
+        - SYS_ADMIN
+      privileged: true
+    volumeMounts:
+    - mountPath: /root/.m2
+      name: m2-cache
+  volumes:
+  - name: m2-cache
+    persistentVolumeClaim:
+      claimName: m2-cache

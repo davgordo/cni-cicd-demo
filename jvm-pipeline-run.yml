@@ -1,0 +1,14 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  name: jvm-pipeline-run
+spec:
+  pipelineRef:
+    name: jvm-pipeline
+  resources:
+    - name: source-repo
+      resourceRef:
+        name: camel-quarkus-quickstart-git
+    - name: app-container-image
+      resourceRef:
+        name: camel-quarkus-quickstart-image
