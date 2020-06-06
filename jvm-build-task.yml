@@ -18,7 +18,7 @@ spec:
     description: The maven command parameter
   - name: runScript
     type: string
-    default: /usr/local/bin/buildah.sh
+    default: /usr/local/bin/maven-run.sh
     description: The script to use during
   - name: push
     type: string
