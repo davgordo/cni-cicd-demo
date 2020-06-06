@@ -4,6 +4,10 @@ metadata:
   name: maven-build
 spec:
   params:
+  - name: contextDir
+    type: string
+    default: /workspace/git-source
+    description: The Maven build context dir
   - name: mavenMirrorUrl
     type: string
     default: https://repo1.maven.org/maven2
@@ -27,6 +31,8 @@ spec:
     args:
     - $(params.runScript)
     env:
+    - name: WORK_DIR
+      value: $(params.contextDir)
     - name: MAVEN_MIRROR_URL
       value: $(params.mavenMirrorUrl)
     - name: MVN_CMD_ARGS
