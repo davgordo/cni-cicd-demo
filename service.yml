@@ -1,26 +1,15 @@
- 
-apiVersion: serving.knative.dev/v1alpha1
+apiVersion: serving.knative.dev/v1
 kind: Service
 metadata:
   name: camel-quarkus-quickstart
 spec:
   template:
-    metadata:
-      labels:
-        app: camel-quarkus-quickstart
     spec:
       containers:
       - image: image-registry.openshift-image-registry.svc:5000/camel-quarkus-quickstart-ci/camel-quarkus-quickstart:latest
-        imagePullPolicy: Always
-        resources:
-          limits:
-            memory: "256Mi"
-            cpu: "100m"
-        ports:
-        - containerPort: 8080
         livenessProbe:
           httpGet:
-            path: /health
+            path: /health/live
         readinessProbe:
           httpGet:
-            path: /health
+            path: /health/ready
