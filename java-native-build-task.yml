@@ -1,42 +1,41 @@
 apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
-  name: maven-build
+  name: java-native-build
 spec:
   params:
-  - name: contextDir
+  - name: PATH_CONTEXT
     type: string
     default: /workspace/git-source
     description: The Maven build context dir
-  - name: mavenMirrorUrl
+  - name: MAVEN_MIRROR_URL
     type: string
     default: https://repo1.maven.org/maven2
     description: The MAVEN_MIRROR_URL url to use
-  - name: mavenCmdArgs
+  - name: MAVEN_CMD_ARGS
     type: string
     default: clean -DskipTests install -Pnative
     description: The maven command parameter
-  - name: runScript
+  - name: RUN_SCRIPT
     type: string
     default: /usr/local/bin/maven-run.sh
     description: The script to use during
   resources:
     inputs:
-    - name: git-source
+    - name: source
       type: git
   steps:
   - name: maven-build
     image: quay.io/rhdevelopers/quarkus-java-builder
-    imagePullPolicy: IfNotPresent
     args:
-    - $(params.runScript)
+    - $(params.RUN_SCRIPT)
     env:
     - name: WORK_DIR
-      value: $(params.contextDir)
+      value: $(params.PATH_CONTEXT)
     - name: MAVEN_MIRROR_URL
-      value: $(params.mavenMirrorUrl)
+      value: $(params.MAVEN_MIRROR_URL)
     - name: MVN_CMD_ARGS
-      value: $(params.mavenCmdArgs)
+      value: $(params.MAVEN_CMD_ARGS)
     resources: {}
     volumeMounts:
     - mountPath: /root/.m2

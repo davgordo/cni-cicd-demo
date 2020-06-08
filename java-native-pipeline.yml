@@ -1,42 +1,43 @@
 apiVersion: tekton.dev/v1beta1
 kind: Pipeline
 metadata:
-  name: java-s2i-pipeline
+  name: java-native-pipeline
 spec:
   params:
   - name: PATH_CONTEXT
     type: string
     default: .
     description: The location of the path to run s2i from
-  - name: TLSVERIFY
-    type: string
-    default: "false"
-    description: Verify the TLS on the registry endpoint (for push/pull to a non-TLS registry)
   - name: MAVEN_MIRROR_URL
     type: string
     default: https://repo1.maven.org/maven2
     description: The base URL of a mirror used for retrieving artifacts
+  - name: RUN_SCRIPT
+    type: string
+    default: /usr/local/bin/maven-run.sh
+    description: The buildah script to run
+  - name: MAVEN_CMD_ARGS
+    type: string
+    default: clean -DskipTests install -Pnative
+    description: The maven goals to pass to the build
   resources:
   - name: source
     type: git
-  - name: image
-    type: image
   tasks:
-  - name: java-s2i-build-task
+  - name: java-native-build
     taskRef:
       kind: Task
-      name: java-s2i-build-task
+      name: java-native-build
     params:
     - name: PATH_CONTEXT
       value: $(params.PATH_CONTEXT)
-    - name: TLSVERIFY
-      value: $(params.TLSVERIFY)
     - name: MAVEN_MIRROR_URL
       value: $(params.MAVEN_MIRROR_URL)
+    - name: MAVEN_CMD_ARGS
+      value: $(params.MAVEN_CMD_ARGS)
+    - name: RUN_SCRIPT
+      value: $(params.RUN_SCRIPT)
     resources:
       inputs:
       - name: source
         resource: source
-      outputs:
-      - name: image
-        resource: image
