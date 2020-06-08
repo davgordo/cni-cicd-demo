@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
-  name: java-s2i-build-task
+  name: java-s2i-build
 spec:
   params:
   - name: PATH_CONTEXT

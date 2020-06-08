@@ -22,10 +22,10 @@ spec:
   - name: image
     type: image
   tasks:
-  - name: java-s2i-build-task
+  - name: java-s2i-build
     taskRef:
       kind: Task
-      name: java-s2i-build-task
+      name: java-s2i-build
     params:
     - name: PATH_CONTEXT
       value: $(params.PATH_CONTEXT)
