@@ -68,12 +68,12 @@ argocd login $(oc get routes argocd -o jsonpath='{ .spec.host }' -n argocd):443
 Create ArgoCD App:
 
 ```bash
-argocd app create --project default --name camel-quarkus-quickstart-dev \
+argocd app create --project default --name camel-quarkus-quickstart-ci \
 --repo https://github.com/davgordo/cni-cicd-demo.git \
 --path . \
 --dest-server https://kubernetes.default.svc \
---dest-namespace camel-quarkus-quickstart-dev \
---revision dev
+--dest-namespace camel-quarkus-quickstart-ci \
+--revision ci
 ```
 
 Sync ArgoCD App:
