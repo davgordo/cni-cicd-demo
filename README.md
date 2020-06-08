@@ -63,3 +63,46 @@ CLI download. Download the CLI, and add it to your path, then login using:
 ```bash
 argocd login $(oc get routes argocd -o jsonpath='{ .spec.host }' -n argocd):443
 ```
+### Create CI Environment
+
+Create ArgoCD App:
+
+```bash
+argocd app create --project default --name camel-quarkus-quickstart-dev \
+--repo https://github.com/davgordo/cni-cicd-demo.git \
+--path . \
+--dest-server https://kubernetes.default.svc \
+--dest-namespace camel-quarkus-quickstart-dev \
+--revision dev
+```
+
+Sync ArgoCD App:
+
+```bash
+argocd app sync camel-quarkus-quickstart-ci
+```
+
+### Run Tekton Pipeline
+
+```bash
+tkn pipeline start java-s2i-pipeline
+```
+
+### Create DEV Environment
+
+Create ArgoCD App:
+
+```bash
+argocd app create --project default --name camel-quarkus-quickstart-dev \
+--repo https://github.com/davgordo/cni-cicd-demo.git \
+--path . \
+--dest-server https://kubernetes.default.svc \
+--dest-namespace camel-quarkus-quickstart-dev \
+--revision dev
+```
+
+Sync ArgoCD App:
+
+```bash
+argocd app sync camel-quarkus-quickstart-dev
+```
