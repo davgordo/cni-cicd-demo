@@ -9,7 +9,7 @@ spec:
       - image: image-registry.openshift-image-registry.svc:5000/camel-quarkus-quickstart-ci/camel-quarkus-quickstart:latest
         livenessProbe:
           httpGet:
-            path: /health/live
+            path: /health
         readinessProbe:
           httpGet:
-            path: /health/ready
+            path: /health
