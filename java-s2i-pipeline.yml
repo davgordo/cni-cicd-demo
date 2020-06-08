@@ -12,17 +12,9 @@ spec:
     type: string
     default: "true"
     description: Verify the TLS on the registry endpoint (for push/pull to a non-TLS registry)
-  - name: MAVEN_ARGS_APPEND
-    type: string
-    default: ""
-    description: Additional Maven arguments
-  - name: MAVEN_CLEAR_REPO
-    type: string
-    default: "false"
-    description: Remove the Maven repository after the artifact is built
   - name: MAVEN_MIRROR_URL
     type: string
-    default: ""
+    default: default: https://repo1.maven.org/maven2
     description: The base URL of a mirror used for retrieving artifacts
   resources:
   - name: source
@@ -39,10 +31,6 @@ spec:
       value: $(params.PATH_CONTEXT)
     - name: TLSVERIFY
       value: $(params.TLSVERIFY)
-    - name: MAVEN_ARGS_APPEND
-      value: $(params.MAVEN_ARGS_APPEND)
-    - name: MAVEN_CLEAR_REPO
-      value: $(params.MAVEN_CLEAR_REPO)
     - name: MAVEN_MIRROR_URL
       value: $(params.MAVEN_MIRROR_URL)
     resources:
