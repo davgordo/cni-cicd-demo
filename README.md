@@ -20,6 +20,13 @@ oc apply -f operators/openshift-pipelines.yml -n openshift-operators
 oc apply -f operators/openshift-serverless.yml -n openshift-operators
 ```
 
+### Install Knative Serving
+
+```bash
+oc new-project knative-serving
+oc apply -f knative/serving.yml -f knative-serving
+```
+
 ### Install ArgoCD Operator from OperatorHub
 
 ```bash
@@ -85,7 +92,7 @@ argocd app sync camel-quarkus-quickstart-ci
 ### Run Tekton Pipeline
 
 ```bash
-tkn pipeline start java-s2i-pipeline
+tkn pipeline start java-s2i-pipeline -n camel-quarkus-quickstart-ci
 ```
 
 ### Create DEV Environment
